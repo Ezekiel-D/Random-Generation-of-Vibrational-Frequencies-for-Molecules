@@ -13,6 +13,7 @@ data_str = np.loadtxt('aspirin.xyz', skiprows=2, dtype=str)
 atom = data_str[:, 0]
 coord = data_str[:, 1:].astype(float)
 
+N_atom = len(atom)
 #Determine linearity:
 #plot all points on a 3d graph
 linearity = True #default is true
@@ -38,8 +39,18 @@ for coordinates in data:
         linearity = False
         break
 
+df = 3 * N_atom #degrees freedom
+vib_df = df - 6
+
+#create random array 0-3200 -> vib_df len of arr.
+
+print("Number of atoms: ", N_atom)  
+print("df: ", df)
 print("Linearity: ", linearity)
 for atom, coord in zip(atom, coord):
     print(f"Atom: {atom}, Coordinates: {coord}")
 
 plot.show()
+
+#generate vibrational spectrum
+
