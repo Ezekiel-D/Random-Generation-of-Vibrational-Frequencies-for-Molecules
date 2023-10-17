@@ -1,0 +1,29 @@
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+import random
+# Assume atomic coordinates are stored in a file named 'coordinates.xyz'
+# Each line in the file is a coordinate in the format: atomic_symbol x y z
+#coordinates = np.loadtxt('aspirin.xyz', skiprows=2, usecols=(1, 2, 3))
+with open('aspirin.xyz') as xyz_file:
+    coordinates = xyz_file.readlines()[2:]
+x_coords = coordinates[:, 0]
+y_coords = coordinates[:, 1]
+z_coords = coordinates[:, 2]
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x_coords, y_coords, z_coords)
+# Select three random atoms
+p1, p2, p3 = coordinates[random.sample(range(len(coordinates)), 3)]
+# Calculate the equation of the plane
+v1 = p3 - p1
+v2 = p2 - p1
+cp = np.cross(v1, v2)
+a, b, c = cp
+d = np.dot(cp, p3)
+# Check if other atoms lie on the plane
+for coord in coordinates:
+    if a*coord[0] + b*coord[1] + c*coord[2] != d:
+        print("Not linear")
+        break
+plt.show()
