@@ -18,8 +18,8 @@ coord = data_str[:, 1:].astype(float)
 linearity = True #default is true
 
 fig = plot.figure()
-axis = fig.add_subplot(111, projection='3d')
-axis.scatter(coord_x, coord_y, coord_z)
+graph = fig.add_subplot(111, projection='3d')
+graph.scatter(coord_x, coord_y, coord_z)
 
 #take three random atoms and connect a 2D plane so that it intersects all 3 points. 
 
