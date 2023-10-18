@@ -11,9 +11,16 @@ coord_z = data[:, 2]
 
 data_str = np.loadtxt('aspirin.xyz', skiprows=2, dtype=str)
 atom = data_str[:, 0]
-coord = data_str[:, 1].astype(float)
+coord = data_str[:, 1:].astype(float)
 
+Nmatch = False
+
+N_given = np.loadtxt('aspirin.xyz', skiprows=0, usecols=(0), max_rows=1)  #extracts number of atom given by document
 N_atom = len(atom)
+if (N_given == N_atom):
+    Nmatch = True
+
+
 #Determine linearity:
 #plot all points on a 3d graph
 linearity = True #default is true
@@ -47,7 +54,6 @@ vibrational_spectrum = [] #generating vibrational_spectrum
 for i in range(vib_df + 1):
     vibrational_spectrum.append(np.random.uniform(0,3200))
 vibrational_spectrum.sort()
-print(vibrational_spectrum)
 for i in range(vib_df + 1):
     if (vibrational_spectrum[i] > 800):
         lowfreq = vibrational_spectrum[:i]
@@ -59,15 +65,11 @@ for i in range(pointer, vib_df):
         highfreq = vibrational_spectrum[i:]
         break
 
-N_lo = len(lowfreq)
-N_hi = len(highfreq)
-
-print(f"Number of atoms: {N_atom}")  
+print(f"Number of atoms: {N_atom} (Match: {Nmatch})") 
 print(f"Vibrational df: {vib_df}")
 print(f"Linearity: {linearity}")
 for atom, coord in zip(atom, coord):
     print(f"Atom: {atom}, Coordinates: {coord}")
-print(f"Low Frequency domain ({N_lo} atoms): {lowfreq}")
-print(f"Fingerprint domain ({N_hi-N_lo} atoms): {fingerprint}")
-print(f"High Frequency domain ({N_hi} atoms): {highfreq}")
-
+print(f"Low Frequency domain ({len(lowfreq)} atoms): {lowfreq}")
+print(f"Fingerprint domain ({len(fingerprint)} atoms): {fingerprint}")
+print(f"High Frequency domain ({len(highfreq)} atoms): {highfreq}")
