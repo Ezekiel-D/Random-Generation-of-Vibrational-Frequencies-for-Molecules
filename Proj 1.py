@@ -4,15 +4,17 @@ import random
 import matplotlib.pyplot as plot
 from mpl_toolkits.mplot3d import Axes3D
 
+file = 'aspirin.xyz'
+
 ##Step 1
 #extracts x, y, z coordinates
-data = np.loadtxt('aspirin.xyz', skiprows=2, usecols=(1, 2, 3))
+data = np.loadtxt(file, skiprows=2, usecols=(1, 2, 3))
 coord_x = data[:, 0]
 coord_y = data[:, 1]
 coord_z = data[:, 2]
 
 #extracts atom and full coordinates
-data_str = np.loadtxt('aspirin.xyz', skiprows=2, dtype=str)
+data_str = np.loadtxt(file, skiprows=2, dtype=str)
 atom = data_str[:, 0]
 coord = data_str[:, 1:].astype(float)
 
@@ -86,13 +88,11 @@ for i in range(pointer, vib_df):
 ##Step 3
 #extracts number of atom given by document and sees whether it matches with the 'atom' array
 Nmatch = False
-N_given = np.loadtxt('aspirin.xyz', skiprows=0, usecols=(0), max_rows=1)  
+N_given = np.loadtxt(file, skiprows=0, usecols=(0), max_rows=1)  
 if (N_given == N_atom):
     Nmatch = True
 
 ##Step 4
-
-
 print(f"""
     Number of atoms: {N_atom} (Match: {Nmatch})
     Linearity: {linearity}
