@@ -4,7 +4,7 @@ import random
 import matplotlib.pyplot as plot
 from mpl_toolkits.mplot3d import Axes3D
 #_______________________________________________
-file = 'benzene.xyz'
+file = 'aspirin.xyz'
 N_atoms_override = 20
 linearity_overide = False
 #_______________________________________________
@@ -45,7 +45,7 @@ graph.scatter(coord_x, coord_y, coord_z)
 def linear_test():
     #indices = np.sample(range(len(data)), len(data))
     points = data
-    if np.linalg.matrix_rank(points) < 3: #checks if line intersects all atoms
+    if np.linalg.matrix_rank(points) < 2: #checks if line intersects all atoms
         linearity = True
     else:
         linearity = False
@@ -76,7 +76,7 @@ def planar_test():
 
 linearity = linear_test()
 if linearity == False:
-    planar_test()
+    planarity = planar_test()
 
 def determine_vib_df(): 
     if linearity == True:
@@ -85,8 +85,7 @@ def determine_vib_df():
         vib_df = df - 6
     return(vib_df)
 
-vib_df = determine_vib_df()
-
+vib_df = determine_vib_df() #replace with determine_vib_df-manual() if needed
 ##Step 2
 #generating vibrational_list
 vibrational_list = [] 
@@ -134,7 +133,7 @@ print(f"""
 {fingerprint}\n
     High-Frequency range ({len(highfreq)} items):
 {highfreq}\n
-NOTE: There is a less than 3E-12% chance of a duplicate item in the Generated vibrational-frequency list for a 100-atoms molecule.
+NOTE: There is a < 3E-12% chance of a duplicate item in the Generated vibrational-frequency list for a 100-atoms molecule.
 """)
 
 prompt = input("View plot of atoms from coordinate file? (y/n)")
