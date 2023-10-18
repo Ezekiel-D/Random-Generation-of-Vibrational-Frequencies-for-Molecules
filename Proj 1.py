@@ -96,7 +96,7 @@ if (N_given == N_atom):
 print(f"""
     Number of atoms: {N_atom} (Match: {Nmatch})
     Linearity: {linearity}
-    Vibrational degrees of freedom: {vib_df}\n
+    Vibrational degrees of freedom: {vib_df}
 """)
 
 print("Transcribed coordinate file:")
@@ -104,14 +104,15 @@ for atom, coord in zip(atom, coord):
     print(f"Atom: {atom}, Coordinates: {coord}")
 
 print(f"""
-    Generated vibrational-frequency list ({len(vibrational_list)} atoms):
+    Generated vibrational-frequency list ({len(vibrational_list)} items):
 {vibrational_list}\n
-    Low-Frequency range ({len(lowfreq)} atoms):
+    Low-Frequency range ({len(lowfreq)} items):
 {lowfreq}\n
-    Fingerprint range ({len(fingerprint)} atoms):
+    Fingerprint range ({len(fingerprint)} items):
 {fingerprint}\n
-    High-Frequency range ({len(highfreq)} atoms):
+    High-Frequency range ({len(highfreq)} items):
 {highfreq}\n
+NOTE: There is a less than 3E-12% chance of a duplicate item in the Generated vibrational-frequency list for a 100-atoms molecule.
 """)
 
 prompt = input("View plot of atoms from coordinate file? (y/n)")
