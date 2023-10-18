@@ -67,7 +67,7 @@ vib_df = determine_vib_df()
 ##Step 2
 #generating vibrational_list
 vibrational_list = [] 
-for i in range(vib_df + 1):
+for i in range(vib_df):
     vibrational_list.append(np.random.uniform(0,3200))
 vibrational_list.sort()
 
@@ -95,7 +95,7 @@ if (N_given == N_atom):
 
 print(f"""
     Number of atoms: {N_atom} (Match: {Nmatch})
-    "Linearity: {linearity}
+    Linearity: {linearity}
     Vibrational degrees of freedom: {vib_df}\n
 """)
 
@@ -104,7 +104,7 @@ for atom, coord in zip(atom, coord):
     print(f"Atom: {atom}, Coordinates: {coord}")
 
 print(f"""
-    Generated vibrational-frequency list:
+    Generated vibrational-frequency list ({len(vibrational_list)} atoms):
 {vibrational_list}\n
     Low-Frequency range ({len(lowfreq)} atoms):
 {lowfreq}\n
