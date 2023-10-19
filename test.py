@@ -4,11 +4,11 @@ import random
 import matplotlib.pyplot as plot
 from mpl_toolkits.mplot3d import Axes3D
 #_______________________________________________
-file = 'Glucose.xyz'
+file = 'Capsaicin.xyz'
 #_______________________________________________
 prompt_initial = input("use atom and linearity override? (y/n)")    
 if prompt_initial == "y":
-    N_atom = int(input("Number of atoms in molecule: (int)"))
+    N_atom = int(input("Number of atoms in molecule: (int>2)"))
     linearity_override = input("Linear? (y/n)")
     if linearity_override == "y":
         linearity = True
@@ -50,15 +50,13 @@ def linear_test():
         linearity = True
     else:
         linearity = False
-    print(np.linalg.matrix_rank(points))
     return(linearity)
 
 planarity = "N/A" #default
 def planar_test():
 #take three random atoms and connect a 2D plane so that it intersects all 3 points. 
     p1, p2, p3 = data[random.sample(range(len(data)), 3)]
-
-    #find plane equation using multivariable alg.
+#find plane equation using multivariable alg.
     vector1 = np.array(p3) - np.array(p1) 
     vector2 = np.array(p2) - np.array(p1)
     cp = np.cross(vector1, vector2)
@@ -71,7 +69,6 @@ def planar_test():
     Z = (dp - a*X - b*Y) / c
     graph.plot_surface(X, Y, Z, alpha=0.3)
 #stop at the first instance of an atom not on the plane
-    
     for coord in data:
         if not np.isclose(a*coord[0] + b*coord[1] + c*coord[2], dp, rtol=1e-02, atol=1e-02):
             planarity = False
@@ -85,7 +82,6 @@ if prompt_initial != "y":
     if linearity == False:
         planarity = planar_test()
 
-print(planarity)
 def determine_vib_df_manual(): 
     if linearity == True:
         vib_df = 3 * N_atom - 5
@@ -131,7 +127,6 @@ Nmatch = False
 N_given = np.loadtxt(file, skiprows=0, usecols=(0), max_rows=1)  
 
 if prompt_initial == "y":
-    Nmatch = "N/A"
+    Nmatch = "NA"
 elif N_given == N_atom:
     Nmatch = True
-
