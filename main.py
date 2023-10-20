@@ -110,6 +110,7 @@ for i in range(vib_df):
 vibrational_list.sort()
 
 #sorting and creating subarrays from vibrational_spectrum
+lowfreq = vibrational_list[:] #in the case that all generated frequencies are below 800
 for i in range(vib_df + 1):
     if (vibrational_list[i] > 800):
         lowfreq = vibrational_list[:i]
