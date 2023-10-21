@@ -4,18 +4,9 @@ import random
 import matplotlib.pyplot as plot
 from mpl_toolkits.mplot3d import Axes3D
 #_______________________________________________
-file = 'Capsaicin.xyz'
+file = 'aspirin.xyz'
 #_______________________________________________
-prompt_initial = input("use atom and linearity override? (y/n)")    
-if prompt_initial == "y":
-    N_atom = int(input("Number of atoms in molecule: (int>2)"))
-    linearity_override = input("Linear? (y/n)")
-    if linearity_override == "y":
-        linearity = True
-    else:
-        linearity = False
-##Step 5
-
+prompt_initial = "n"
 
 
 ##Step 1
@@ -46,7 +37,7 @@ graph.scatter(coord_x, coord_y, coord_z)
 def linear_test():
     #indices = np.sample(range(len(data)), len(data))
     points = data
-    if np.linalg.matrix_rank(points) < 2: #checks if line intersects all atoms
+    if np.linalg.matrix_rank(points) < 3: #checks if line intersects all atoms
         linearity = True
     else:
         linearity = False
@@ -61,27 +52,27 @@ def planar_test():
     vector2 = np.array(p2) - np.array(p1)
     cp = np.cross(vector1, vector2)
     a, b, c = cp
-    dp = np.dot(cp, p3)
+    d = np.dot(cp, p3)
 #plot plane
     x = np.linspace(min(data[:, 0]), max(data[:, 0]), 10)
     y = np.linspace(min(data[:, 1]), max(data[:, 1]), 10)
     X, Y = np.meshgrid(x, y)
-    Z = (dp - a*X - b*Y) / c
+    Z = (d - a*X - b*Y) / c
     graph.plot_surface(X, Y, Z, alpha=0.3)
 #stop at the first instance of an atom not on the plane
     for coord in data:
-        if not np.isclose(a*coord[0] + b*coord[1] + c*coord[2], dp, rtol=1e-02, atol=1e-02):
+        if not np.isclose(a*coord[0] + b*coord[1] + c*coord[2], d, rtol=1e-02, atol=1e-02):
             planarity = False
             return(planarity)
     planarity = True
     return(planarity)
      
-
-if prompt_initial != "y":
-    linearity = linear_test()
-    if linearity == False:
-        planarity = planar_test()
-
+planarity = planar_test()
+#if prompt_initial != "y":
+    #linearity = linear_test()
+    #if linearity == False:
+        #planarity = planar_test()
+linearity = True
 def determine_vib_df_manual(): 
     if linearity == True:
         vib_df = 3 * N_atom - 5
@@ -130,3 +121,20 @@ if prompt_initial == "y":
     Nmatch = "NA"
 elif N_given == N_atom:
     Nmatch = True
+
+
+p1, p2, p3 = [[1,2,3], [2,3,4], [3, 3, 3]]
+vector1 = np.array(p3) - np.array(p1) 
+vector2 = np.array(p2) - np.array(p1)
+cp = np.cross(vector1, vector2)
+a, b, c = cp
+dp = np.dot(cp, p3)
+x = np.linspace(min(data[:, 0]), max(data[:, 0]), 10)
+y = np.linspace(min(data[:, 1]), max(data[:, 1]), 10)
+X, Y = np.meshgrid(x, y)
+Z = (dp - a*X - b*Y) / c
+print(vector1, vector2)
+print(cp)
+print(dp)
+print(a*X)
+print(b*Y)
