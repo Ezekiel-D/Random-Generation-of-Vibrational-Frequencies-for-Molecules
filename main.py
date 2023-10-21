@@ -4,13 +4,8 @@ import random
 import matplotlib.pyplot as plot
 from mpl_toolkits.mplot3d import Axes3D
 #_______________________________________________
-file = 'benzene.xyz'
+file = 'aspirin.xyz'
 #_______________________________________________
-linearity = input(f"State linearity of {file}: (t/f)")
-if linearity == "t":
-    linearity = True
-else:
-    linearity = False
 prompt_initial = input("use atom and linearity override? (y/n)")    
 if prompt_initial == "y":
     N_atom = int(input("Number of atoms in molecule: (int>2)"))
@@ -19,6 +14,11 @@ if prompt_initial == "y":
         linearity = True
     else:
         linearity = False
+linearity = input(f"State linearity of {file}: (t/f)")
+if linearity == "t":
+    linearity = True
+else:
+    linearity = False
 ##Step 5
 
 ##Step 1
@@ -39,26 +39,24 @@ if prompt_initial != "y":
     N_atom = len(atom)
 df = 3 * N_atom
 
-##EXT: Determine linearity
 #plot all points on a 3d graph
 
 pltfig = plot.figure()
 graph = pltfig.add_subplot(111, projection='3d')
 graph.scatter(coord_x, coord_y, coord_z)
-
 planarity = "N/A" #default
 def planar_test():
 #take three random atoms and connect a 2D plane so that it intersects all 3 points. 
     p1, p2, p3 = data[random.sample(range(len(data)), 3)]
 #find plane equation using multivariable alg.
-    vector1 = np.array(p3) - np.array(p1) 
+    vector1 = np.array(p3) - np.array(p1)
     vector2 = np.array(p2) - np.array(p1)
     cp = np.cross(vector1, vector2)
     a, b, c = cp
     d = np.dot(cp, p3)
 #plot plane
-    x = np.linspace(min(data[:, 0]), max(data[:, 0]))
-    y = np.linspace(min(data[:, 1]), max(data[:, 1]))
+    x = np.linspace(min(data[:, 0]), max(data[:, 0]), 10)
+    y = np.linspace(min(data[:, 1]), max(data[:, 1]), 10)
     X, Y = np.meshgrid(x, y)
     Z = (d - a*X - b*Y) / c #ax + by + cz = d
     graph.plot_surface(X, Y, Z, alpha=0.1)
@@ -71,27 +69,18 @@ def planar_test():
     return(planarity)
      
 
-if not linearity:
-    planarity = planar_test()
+if prompt_initial != "y":
+    if not linearity:
+        planarity = planar_test()
 
-def determine_vib_df_manual(): 
-    if linearity:
-        vib_df = 3 * N_atom - 5
-    else:
-        vib_df = 3 * N_atom - 6
-    return(vib_df)
-
-def determine_vib_df_file(): 
+def determine_vib_df(): 
     if linearity:
         vib_df = df - 5
     else:
         vib_df = df - 6
     return(vib_df)
 
-if prompt_initial == "y":
-    vib_df = determine_vib_df_manual()
-else:
-    vib_df = determine_vib_df_file()
+vib_df = determine_vib_df()
 
 
 ##Step 2
@@ -103,7 +92,7 @@ vibrational_list.sort()
 
 #sorting and creating subarrays from vibrational_spectrum
 lowfreq = vibrational_list[:] #in the case that all generated frequencies are below 800
-for i in range(vib_df + 1):
+for i in range(vib_df):
     if (vibrational_list[i] > 800):
         lowfreq = vibrational_list[:i]
         pointer = i
@@ -124,7 +113,6 @@ if prompt_initial == "y":
 elif N_given == N_atom:
     Nmatch = True
 
-##Step 4
 print(f"""
     Number of atoms: {N_atom} (Match: {Nmatch})
     Linearity: {linearity}

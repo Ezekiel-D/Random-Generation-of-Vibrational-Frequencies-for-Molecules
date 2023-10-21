@@ -20,7 +20,7 @@ coord_z = data[:, 2]
 #extracts atom
 data_str = np.loadtxt(file, skiprows=2, dtype=str)
 atom = data_str[:, 0]
-
+print(atom)
 
 #vibrational degrees freedom acquired from data here
 if prompt_initial != "y":
@@ -133,8 +133,3 @@ x = np.linspace(min(data[:, 0]), max(data[:, 0]), 10)
 y = np.linspace(min(data[:, 1]), max(data[:, 1]), 10)
 X, Y = np.meshgrid(x, y)
 Z = (dp - a*X - b*Y) / c
-print(vector1, vector2)
-print(cp)
-print(dp)
-print(a*X)
-print(b*Y)
